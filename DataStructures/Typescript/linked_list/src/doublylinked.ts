@@ -15,7 +15,6 @@ export interface IDoublyLinked<T> {
     peekHead(): T | null; // O(1)
     peekTail(): T | null; // O(1)
     size(): number; //O(1)
-    cur: number;
 }
 
 export class DoublyLinked<T> implements IDoublyLinked<T> {
@@ -133,7 +132,7 @@ export class DoublyLinked<T> implements IDoublyLinked<T> {
 
         if (index < this._size / 2) {
             curNode = this.head;
-            for (let i = 0; i < index; ++i) {
+            for (let i = 0; i < index; i++) {
                 if (curNode !== null) {
                     curNode = curNode.next;
                 }
@@ -141,7 +140,7 @@ export class DoublyLinked<T> implements IDoublyLinked<T> {
 
         } else {
             curNode = this.tail;
-            for (let i = 0; i > index; --i) {
+            for (let i = 0; i > index; i--) {
                 if (curNode !== null) {
                     curNode = curNode.prev;
                 }
@@ -152,17 +151,78 @@ export class DoublyLinked<T> implements IDoublyLinked<T> {
     }
 
     insertAt(index: number, data: T): void {
-        let node = this.getAt(index)
+        const node: DataNode<T> = {
+            data,
+            next: null,
+            prev: null
+        }
 
 
+        const rightNode = this.getAt(index)
+        if (rightNode === null) {
+            return;
+        }
 
+        // [rn]-[]-[] or []-[]-[rn] ??
+        //right node is in the moddle [a]-[rn]-[b]
+        if (rightNode !== null && rightNode.next !== null && rightNode.prev !== null) {
+            node.prev = rightNode.prev;
+            rightNode.prev.next = node;
+
+        }
+
+        rightNode.prev = node;
+        node.next = rightNode;
     }
 
-    removeAt() { }
+    removeAt(index: number): T | null {
+        if (this._size === 0 || index === null) {
+            return null;
+        }
+
+        const node = this.getAt(index);
+        if (node === null) {
+            return null;
+        }
+
+        if (node.next !== null) {
+            node.next.prev = node.prev;
+        }
+        if (node.prev) {
+            node.prev.next = node.next;
+        }
+
+        return node.data;
+    }
 
     size(): number {
         return this._size;
     }
 
 
+    print(): void {
+        if (this === null || this._size === 0) {
+            return
+        } else {
+            for (let i = 0; i < this._size; i++) {
+                console.log(this.getAt(i))
+            }
+        }
+
+    }
+
+
 }
+
+const ll = new DoublyLinked();
+ll.enqueue('we can have strings');
+ll.enqueue(1); //or ints
+ll.enqueue(0); //or any object really
+ll.enqueue("something"); //or any object really
+// ll.enqueue(null); //or any object really incl null because its generic
+// console.log(ll);
+
+
+console.log(ll.size())
+ll.print()
+
