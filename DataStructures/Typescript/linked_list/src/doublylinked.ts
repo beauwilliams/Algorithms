@@ -204,9 +204,7 @@ export class DoublyLinked<T> implements IDoublyLinked<T> {
         if (this === null || this._size === 0) {
             return
         } else {
-            for (let i = 0; i < this._size; i++) {
-                console.log(this.getAt(i))
-            }
+            console.log(this)
         }
 
     }
@@ -223,6 +221,6 @@ ll.enqueue("something"); //or any object really
 // console.log(ll);
 
 
-console.log(ll.size())
+console.log("size = " + ll.size())
 ll.print()
 
