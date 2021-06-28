@@ -12,9 +12,9 @@ export interface IDoublyLinked<T> {
     getAt(index: number): T | null; // O(n)
     insertAt(index: number, data: T): void; // O(n)
     removeAt(index: number): T | null; // O(n)
-    peekHead(): T | null;
-    peekTail(): T | null;
-    size(): number;
+    peekHead(): T | null; // O(1)
+    peekTail(): T | null; // O(1)
+    size(): number; //O(1)
 }
 
 export class DoublyLinked<T> implements IDoublyLinked<T> {
